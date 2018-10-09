@@ -7,5 +7,9 @@ edition = "2018"
 [dependencies]
 env_logger = "^0.5.13"
 limiting-factor = { path = "../limiting-factor", features = ["minimal"] }
+log = "^0.4.5"
 rocket = "^0.3.16"
 rocket_codegen = "^0.3.16"
+rocket_contrib = { version = "*", features = ["json"] }
+serde = "1.0"
+serde_derive = "1.0"
