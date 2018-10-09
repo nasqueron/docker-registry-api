@@ -1,0 +1,11 @@
+[package]
+name = "docker-registry-api"
+version = "0.1.0"
+authors = ["Sébastien Santoro <dereckson@espace-win.org>"]
+edition = "2018"
+
+[dependencies]
+env_logger = "^0.5.13"
+limiting-factor = { path = "../limiting-factor", features = ["minimal"] }
+rocket = "^0.3.16"
+rocket_codegen = "^0.3.16"
