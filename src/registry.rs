@@ -90,6 +90,16 @@ impl Registry {
 
         Some(repository)
     }
+
+    pub fn get_all_repositories (&self) -> Vec<Repository> {
+        let path = self.get_repositories_path();
+        let path = Path::new(&path);
+
+        get_subdirectories_names(path)
+            .iter()
+            .filter_map(|name| self.get_repository(&name))
+            .collect()
+    }
 }
 
 /*   -------------------------------------------------------------

@@ -46,3 +46,10 @@ pub fn get_repository_info(repository_name: String) -> ApiJsonResponse<Repositor
         }
     }
 }
+
+#[get("/repository/getAll")]
+pub fn get_all_repositories() -> ApiJsonResponse<Vec<Repository>> {
+    Registry::with_default_location()
+        .get_all_repositories()
+        .into_json_response()
+}
