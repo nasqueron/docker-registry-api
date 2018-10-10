@@ -9,6 +9,7 @@ pub fn run () {
         status,
         favicon,
         get_registry_stats,
+        get_repository_info,
     ];
 
     MinimalApplication::start_application(routes);
