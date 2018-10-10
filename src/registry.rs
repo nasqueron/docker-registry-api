@@ -140,7 +140,7 @@ impl Repository {
 
     pub fn is_valid_name(name: &str) -> bool {
         lazy_static! {
-            static ref RE: Regex = Regex::new("^/?[a-zA-Z0-9_-]+$").unwrap();
+            static ref RE: Regex = Regex::new("^[a-zA-Z0-9_-]+$").unwrap();
         }
 
         RE.is_match(name) && name.len() <= 30
