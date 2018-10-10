@@ -1,4 +1,5 @@
 use lazy_static::lazy_static;
+use log::error;
 use regex::Regex;
 use serde_derive::{Deserialize, Serialize};
 use std::fs::{DirEntry, File, read_dir};
