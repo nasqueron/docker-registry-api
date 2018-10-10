@@ -6,9 +6,13 @@ use limiting_factor::kernel::MinimalApplication;
 pub fn run () {
 
     let routes = routes![
+        // Monitoring
         status,
-        favicon,
+
+        // /docker/registry
         get_registry_stats,
+
+        // /docker/registry/repository
         get_repository_info,
         get_all_repositories,
         find_repository_by_layer,

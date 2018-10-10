@@ -4,30 +4,24 @@
 
 use crate::registry::{Registry, Repository};
 use limiting_factor::api::replies::*;
-use rocket::response::NamedFile;
 
 #[get("/status")]
 pub fn status() -> &'static str {
     "ALIVE"
 }
 
-#[get("/favicon.ico")]
-pub fn favicon() -> Option<NamedFile> {
-    NamedFile::open("assets/favicon.ico").ok()
-}
-
 //  -------------------------------------------------------------
-//  /registry
+//  /docker/registry
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#[get("/registry/stats")]
+#[get("/stats")]
 pub fn get_registry_stats() -> ApiJsonResponse<Registry> {
     Registry::with_default_location()
         .into_json_response()
 }
 
 //  -------------------------------------------------------------
-//  /repository
+//  /docker/registry/repository
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #[get("/repository/<repository_name>")]
