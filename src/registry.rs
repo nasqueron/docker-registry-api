@@ -100,6 +100,20 @@ impl Registry {
             .filter_map(|name| self.get_repository(&name))
             .collect()
     }
+
+    pub fn get_repositories_by_layer_hash(&self, hash: &str) -> Vec<Repository> {
+        self.get_all_repositories()
+            .into_iter()
+            .filter(|repo| repo.has_layer(hash))
+            .collect()
+    }
+
+    pub fn get_repositories_by_image_hash(&self, hash: &str) -> Vec<Repository> {
+        self.get_all_repositories()
+            .into_iter()
+            .filter(|repo| repo.has_image(hash))
+            .collect()
+    }
 }
 
 /*   -------------------------------------------------------------
@@ -132,6 +146,14 @@ impl Repository {
         RE.is_match(name) && name.len() <= 30
     }
 
+    pub fn is_valid_hash(hash: &str) -> bool {
+        lazy_static! {
+            static ref RE: Regex = Regex::new("^[a-f0-9]+$").unwrap();
+        }
+
+        RE.is_match(hash) && hash.len() == 64
+    }
+
     pub fn update_tags(&mut self) {
         let path = Path::new(&self.directory).join("_manifests/tags");
 
@@ -158,6 +180,22 @@ impl Repository {
         buffer = Tag::clean_tag(&buffer);
 
         Ok(buffer)
+    }
+
+    pub fn has_layer (&self, layer_hash_to_seek: &str) -> bool {
+        let path = Path::new(&self.directory).join("_layers/sha256");
+
+        get_subdirectories_names(&path)
+            .iter()
+            .any(|hash| hash == layer_hash_to_seek)
+    }
+
+    pub fn has_image (&self, image_hash_to_seek: &str) -> bool {
+        let path = Path::new(&self.directory).join("_manifests/revisions/sha256");
+
+        get_subdirectories_names(&path)
+            .iter()
+            .any(|hash| hash == image_hash_to_seek)
     }
 }
 

@@ -53,3 +53,25 @@ pub fn get_all_repositories() -> ApiJsonResponse<Vec<Repository>> {
         .get_all_repositories()
         .into_json_response()
 }
+
+#[get("/repository/findByLayer/<hash>")]
+pub fn find_repository_by_layer(hash: String) -> ApiJsonResponse<Vec<Repository>> {
+    if !Repository::is_valid_hash(&hash) {
+        return Err(build_bad_request_response())
+    }
+
+    Registry::with_default_location()
+        .get_repositories_by_layer_hash(&hash)
+        .into_json_response()
+}
+
+#[get("/repository/findByImage/<hash>")]
+pub fn find_repository_by_image(hash: String) -> ApiJsonResponse<Vec<Repository>> {
+    if !Repository::is_valid_hash(&hash) {
+        return Err(build_bad_request_response())
+    }
+
+    Registry::with_default_location()
+        .get_repositories_by_image_hash(&hash)
+        .into_json_response()
+}
