@@ -1,0 +1,172 @@
+swagger: "2.0"
+
+info:
+  description: |
+    This API exposes the content of the private registry available
+    on Nasqueron Docker servers linked to the Docker PaaS.
+
+    The PaaS uses mainly images from Docker Hub, so the images references here
+    are generally special cases like work in progress containers or migrations.
+  version: "0.0.1"
+  title: "Nasqueron private Docker registry API"
+  termsOfService: "https://agora.nasqueron.org/Terms_and_policies/API"
+  contact:
+    name: "Nasqueron"
+    url: "https://purl.net/NET/Nasqueron/Support"
+  license:
+    name: "BSD-2-Clause"
+    url: "https://opensource.org/licenses/BSD-2-Clause"
+
+host: "api.nasqueron.org"
+basePath: "/docker/registry"
+
+tags:
+- name: "registry"
+  description: "Utilities for general information about the registry"
+- name: "repository"
+  description: "Utilities for information about repositories"
+
+schemes:
+- "https"
+
+paths:
+  "/stats":
+    get:
+      tags:
+      - "registry"
+      summary: Get statistics
+      description: >
+        Gets statistics information about the registry.
+
+        Currently, it prints the number of repositories.
+      operationId: "getRegistryStats"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Registry"
+
+  "/repository/{repositoryName}":
+    get:
+      tags:
+      - "repository"
+      summary: Get repository info
+      description: >
+        Gets information about a repository.
+
+        Currently, it outputs the list of tags available.
+      operationId: "getRepositoryInfo"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "repositoryName"
+        in: "path"
+        description: "name of the repository to query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Repository"
+        400:
+          description: "Invalid name supplied"
+        404:
+          description: "Repository not found"
+
+  "/repository/getAll":
+    get:
+      tags:
+      - "repository"
+      summary: "Get all repositories"
+      operationId: "getAllRepositories"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/RepositoryCollection"
+
+  "/repository/findByLayer/{layerHash}":
+    get:
+      tags:
+      - "repository"
+      summary: "Find a repository by layer"
+      operationId: "findRepositoryByLayer"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "layerHash"
+        in: "path"
+        description: "hash of the layer to find"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/RepositoryCollection"
+        400:
+          description: "Invalid hash supplied"
+
+  "/repository/findByImage/{imageHash}":
+    get:
+      tags:
+      - "repository"
+      summary: "Find a repository by image"
+      operationId: "findRepositoryByImage"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "imageHash"
+        in: "path"
+        description: "hash of the image to find"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/RepositoryCollection"
+        400:
+          description: "Invalid hash supplied"
+
+definitions:
+  Registry:
+    type: "object"
+    properties:
+      repositoriesCount:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+
+  RepositoryCollection:
+    description: This is an array of repositories. This type is used by search operation.
+    type: "array"
+    items:
+      $ref: '#/definitions/Repository'
+
+  Repository:
+    description: A repository is a set of images for a service.
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      tags:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Tag"
+
+  Tag:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      hash:
+        type: "string"
