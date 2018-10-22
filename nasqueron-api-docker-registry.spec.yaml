@@ -144,7 +144,7 @@ definitions:
         minimum: 0
 
   RepositoryCollection:
-    description: This is an array of repositories. This type is used by search operation.
+    description: This is an array of repositories. This type is used by search operations.
     type: "array"
     items:
       $ref: '#/definitions/Repository'
