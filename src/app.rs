@@ -2,6 +2,7 @@
 
 use crate::requests::*;
 use limiting_factor::kernel::MinimalApplication;
+use rocket_codegen::routes;
 
 pub fn run () {
 

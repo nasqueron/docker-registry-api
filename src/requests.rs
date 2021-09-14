@@ -4,6 +4,8 @@
 
 use crate::registry::{Registry, Repository};
 use limiting_factor::api::replies::*;
+use rocket::http::Status;
+use rocket_codegen::get;
 
 #[get("/status")]
 pub fn status() -> &'static str {
@@ -30,12 +32,12 @@ pub fn get_repository_info(repository_name: String) -> ApiJsonResponse<Repositor
         .get_repository(&repository_name);
 
     match repository {
-        None => Err(build_bad_request_response()),
+        None => Err(Status::BadRequest),
         Some(repo) => {
             if repo.exists() {
                 Ok(repo.into_json_response()?)
             } else {
-                Err(build_not_found_response())
+                Err(Status::NotFound)
             }
         }
     }
@@ -51,7 +53,7 @@ pub fn get_all_repositories() -> ApiJsonResponse<Vec<Repository>> {
 #[get("/repository/findByLayer/<hash>")]
 pub fn find_repository_by_layer(hash: String) -> ApiJsonResponse<Vec<Repository>> {
     if !Repository::is_valid_hash(&hash) {
-        return Err(build_bad_request_response())
+        return Err(Status::BadRequest)
     }
 
     Registry::with_default_location()
@@ -62,7 +64,7 @@ pub fn find_repository_by_layer(hash: String) -> ApiJsonResponse<Vec<Repository>
 #[get("/repository/findByImage/<hash>")]
 pub fn find_repository_by_image(hash: String) -> ApiJsonResponse<Vec<Repository>> {
     if !Repository::is_valid_hash(&hash) {
-        return Err(build_bad_request_response())
+        return Err(Status::BadRequest)
     }
 
     Registry::with_default_location()

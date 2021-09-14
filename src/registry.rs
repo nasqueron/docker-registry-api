@@ -11,8 +11,8 @@ use std::path::Path;
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /// Represents a Docker registry
-#[serde(rename_all = "camelCase")]
 #[derive(Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct Registry {
     #[serde(skip_serializing)]
     pub directory: String,
@@ -121,8 +121,8 @@ impl Registry {
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /// Represents a repository from the Docker registry
-#[serde(rename_all = "camelCase")]
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Repository {
     #[serde(skip_serializing)]
     pub directory: String,
@@ -204,8 +204,8 @@ impl Repository {
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /// Represents a repository tag
-#[serde(rename_all = "camelCase")]
 #[derive(Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct Tag {
     pub name: String,
     pub hash: String,
