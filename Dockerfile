@@ -10,7 +10,7 @@
 #     Builder phase
 #    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-FROM ekidd/rust-musl-builder:nightly AS builder
+FROM nasqueron/rust-musl-builder:nightly AS builder
 ADD . ./
 RUN sudo chown -R rust:rust /home/rust && \
     cargo build --release
